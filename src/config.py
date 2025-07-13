@@ -24,3 +24,8 @@ DATA_URL_JAN = "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_
 MODEL_PATH = "C:\\Users\\jeane_bkpplgv\\OneDrive\\Escritorio\\UDD\\5° Trimestre\\Desarrollo de Proyectos y Productos de Datos\\tarea_1\\model_outputs\\model.joblib"
 
 
+# --- Meses para evaluación del modelo ---
+MESES_EVALUACION = ['2020-01', '2020-02', '2020-03']
+
+
+
