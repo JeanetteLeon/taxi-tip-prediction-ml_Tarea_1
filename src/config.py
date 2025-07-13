@@ -27,3 +27,6 @@ PARQUET_BASE_PATH = "C:\\Users\\jeane_bkpplgv\\OneDrive\\Escritorio\\UDD\\5° Tr
 
 # --- Meses para evaluación del modelo ---
 MESES_EVALUACION = ['2020-01', '2020-02', '2020-03']
+
+# --- URL base para descarga de Parquets mensuales ---
+PARQUET_BASE_URL = "https://d37ci6vzurychx.cloudfront.net/trip-data"
