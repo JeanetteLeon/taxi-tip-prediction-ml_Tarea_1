@@ -1,6 +1,6 @@
 import os
 import pandas as pd
-from src.config import MESES_EVALUACION, # scripts/evaluate_months.py
+from src.config import MESES_EVALUACION, TEST_PROCESSED_PATH # scripts/evaluate_months.py
 
 import os
 import pandas as pd
