@@ -21,7 +21,7 @@ DATA_URL_JAN = "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_
 
 # --- Datos procesados ---
 TRAIN_PROCESSED_PATH = (
-    "C:\\Users\\jeane_bkpplgv\\OneDrive\\Escritorio\\UDD\\5° Trimestre\\Desarrollo de Proyectos y Productos de Datos\\tarea_1\\data\\processed\\train\\train_data"
+    "C:\\Users\\jeane_bkpplgv\\OneDrive\\Escritorio\\UDD\\5° Trimestre\\Desarrollo de Proyectos y Productos de Datos\\tarea_1\\data\\processed\\train"
 )
 
 # --- Ruta donde se guardarán los datos crudos (sin procesar) de test ---
