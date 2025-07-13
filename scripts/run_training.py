@@ -19,12 +19,17 @@ def main():
     # Cargar datos desde URL
     df_raw = load_dataset(DATA_URL_JAN)
 
-    # Guardar archivo crudo
+    # --- Guardar dataset crudo completo (externo) ---
     os.makedirs(TRAIN_RAW_PATH, exist_ok=True)
     raw_filename = "yellow_tripdata_2020-01.parquet"
     raw_path = os.path.join(TRAIN_RAW_PATH, raw_filename)
     df_raw.to_parquet(raw_path, index=False)
     print(f"✓ Datos crudos guardados en: {raw_path}")
+
+    # --- Guardar muestra cruda de 10 registros (proyecto) ---
+    sample_raw_path = os.path.join("data", "raw", "train_sample_raw.csv")
+    os.makedirs(os.path.dirname(sample_raw_path), exist_ok=True)
+    df_raw.head(10).to_csv(sample_raw_path, index=False)
 
     print("Limpiando datos...")
     df_clean = clean_data(df_raw)
@@ -32,20 +37,18 @@ def main():
     print("Generando variables...")
     df_final = build_features(df_clean)
 
-    # --- Crear carpeta si no existe ---
+    # --- Guardar dataset procesado completo (externo) ---
     os.makedirs(TRAIN_PROCESSED_PATH, exist_ok=True)
-
-    # --- Guardar dataset completo ---
     full_path = os.path.join(TRAIN_PROCESSED_PATH, "data_train.parquet")
     df_final.to_parquet(full_path, index=False)
 
-    # --- Guardar muestra de 100.000 registros ---
+    # --- Guardar muestra procesada de 100.000 registros (externo) ---
     sample_100k = df_final.head(100_000)
     sample_100k_path = os.path.join(TRAIN_PROCESSED_PATH, "train_sample_100k.parquet")
     sample_100k.to_parquet(sample_100k_path, index=False)
 
-    # --- Guardar muestra rápida de 10 registros en CSV ---
-    sample_10_path = "data/processed/train/train_sample.csv"
+    # --- Guardar muestra procesada de 10 registros (proyecto) ---
+    sample_10_path = os.path.join("data", "processed", "train", "train_sample.csv")
     os.makedirs(os.path.dirname(sample_10_path), exist_ok=True)
     df_final.head(10).to_csv(sample_10_path, index=False)
 
