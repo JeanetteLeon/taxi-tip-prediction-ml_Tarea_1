@@ -1,91 +1,51 @@
-# src/modeling/evaluation.py
-
 import os
-import joblib
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-from sklearn.metrics import (
-    f1_score, accuracy_score, confusion_matrix,
-    roc_auc_score, roc_curve
-)
+from src.config import MESES_EVALUACION, PARQUET_BASE_PATH
+from src.data.dataset import load_dataset, clean_data
+from src.features.build_features import build_features
+from src.modeling.evaluation import load_model, evaluate_model
 
-# Importar constantes definidas en config.py
-from src.config import FEATURES, TARGET_COL, MODEL_PATH
+# Cargar modelo una vez
+model = load_model()
 
+# Lista para guardar resultados
+resultados = []
 
-def load_model(path: str = MODEL_PATH):
-    """
-    Carga el modelo entrenado desde un archivo .joblib.
-    """
-    return joblib.load(path)
+# Evaluar por cada mes
+for mes in MESES_EVALUACION:
+    print(f"Evaluando mes: {mes}")
 
+    # Construir ruta al archivo parquet local
+    parquet_path = os.path.join(PARQUET_BASE_PATH, f"yellow_tripdata_{mes}.parquet")
 
-def evaluate_model(
-    df: pd.DataFrame,
-    model,
-    save_plot: bool = False,
-    plot_path: str = "src/visualization/roc_curve.png",
-    cm_path: str = None
-):
-    """
-    Evalúa un modelo entrenado usando un conjunto de datos dado.
+    # Cargar y preparar los datos
+    df = load_dataset(parquet_path)
+    df = clean_data(df)
+    df = build_features(df)
 
-    Parámetros:
-        df: DataFrame con los datos a evaluar.
-        model: modelo RandomForest previamente entrenado.
-        save_plot: si True, guarda la curva ROC como imagen.
-        plot_path: ruta donde se guardará la curva ROC.
-        cm_path: ruta donde se guardará la matriz de confusión (si se indica).
+    # Definir rutas para guardar las imágenes
+    roc_path = f"src/visualization/roc_curve_{mes}.png"
+    cm_path = f"src/visualization/conf_matrix_{mes}.png"
 
-    Retorna:
-        Un diccionario con las métricas de evaluación y la matriz de confusión.
-    """
-    # Variables predictoras y objetivo
-    X = df[FEATURES]
-    y_true = df[TARGET_COL]
+    # Evaluar modelo
+    metrics, _ = evaluate_model(
+        df,
+        model,
+        save_plot=True,
+        plot_path=roc_path,
+        cm_path=cm_path
+    )
 
-    # Predicciones
-    y_pred = model.predict(X)
-    y_proba = model.predict_proba(X)[:, 1]  # Clase positiva
+    # Guardar resultados en lista
+    resultados.append({
+        "mes": mes,
+        "cantidad_ejemplos": len(df),
+        "f1_score": metrics["f1_score"],
+        "accuracy": metrics["accuracy"],
+        "roc_auc": metrics["roc_auc"]
+    })
 
-    # Métricas
-    f1 = f1_score(y_true, y_pred)
-    acc = accuracy_score(y_true, y_pred)
-    auc = roc_auc_score(y_true, y_proba)
-    cm = confusion_matrix(y_true, y_pred)
-
-    # Curva ROC
-    fpr, tpr, _ = roc_curve(y_true, y_proba)
-
-    # Gráfico ROC
-    if save_plot:
-        os.makedirs(os.path.dirname(plot_path), exist_ok=True)
-        plt.figure()
-        plt.plot(fpr, tpr, label=f'ROC curve (AUC = {auc:.2f})')
-        plt.plot([0, 1], [0, 1], 'k--')
-        plt.xlabel('False Positive Rate')
-        plt.ylabel('True Positive Rate')
-        plt.title('Curva ROC')
-        plt.legend(loc='lower right')
-        plt.savefig(plot_path)
-        plt.close()
-
-    # Gráfico de matriz de confusión
-    if cm_path:
-        os.makedirs(os.path.dirname(cm_path), exist_ok=True)
-        plt.figure(figsize=(6, 5))
-        sns.heatmap(cm, annot=True, fmt="d", cmap="Blues")
-        plt.title("Matriz de Confusión")
-        plt.xlabel("Predicho")
-        plt.ylabel("Real")
-        plt.savefig(cm_path)
-        plt.close()
-
-    # Retorna métricas
-    return {
-        "f1_score": f1,
-        "accuracy": acc,
-        "roc_auc": auc,
-        "confusion_matrix": cm.tolist()
-    }
+# Crear y guardar tabla de resultados
+df_resultados = pd.DataFrame(resultados)
+df_resultados.to_csv("src/visualization/metrics_by_month.csv", index=False)
+print("\nResultados guardados en src/visualization/metrics_by_month.csv")
