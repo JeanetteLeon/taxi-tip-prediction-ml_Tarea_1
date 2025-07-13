@@ -1,4 +1,6 @@
 
+import pandas as pd
+
 from src.config import FEATURES, TARGET_COL, TIP_THRESHOLD, EPS
 
 def build_features(df: pd.DataFrame) -> pd.DataFrame:
