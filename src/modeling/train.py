@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 import joblib
@@ -5,15 +6,6 @@ import joblib
 from src.config import FEATURES, TARGET_COL, MODEL_PATH
 
 def train_model(df: pd.DataFrame) -> RandomForestClassifier:
-    """
-    Entrena un modelo Random Forest usando las columnas definidas en config.py.
-
-    Parámetros:
-    - df: DataFrame con features y columna objetivo
-
-    Retorna:
-    - modelo entrenado (RandomForestClassifier)
-    """
     X = df[FEATURES]
     y = df[TARGET_COL]
 
@@ -23,11 +15,5 @@ def train_model(df: pd.DataFrame) -> RandomForestClassifier:
     return model
 
 def save_model(model: RandomForestClassifier, path: str = MODEL_PATH):
-    """
-    Guarda el modelo entrenado en formato joblib.
-
-    Parámetros:
-    - model: modelo entrenado
-    - path: ruta donde guardar el archivo
-    """
+    os.makedirs(os.path.dirname(path), exist_ok=True)  # 🔧 Asegura que el directorio exista
     joblib.dump(model, path)
