@@ -4,12 +4,14 @@ import sys
 import os
 
 # Agrega el path del proyecto raíz para poder importar el módulo 'src'
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
-from src.data.dataset import load_dataset, clean_data
-from src.features.build_features import build_features
-from src.modeling.train import train_model, save_model
-from src.config import DATA_URL_JAN
+
+from scr.data.dataset import load_dataset, clean_data
+from scr.features.build_features import build_features
+from scr.modeling.train import train_model, save_model
+from scr.config import DATA_URL_JAN
+
 
 def main():
     print("Cargando datos...")
