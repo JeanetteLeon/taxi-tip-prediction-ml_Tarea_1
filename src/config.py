@@ -16,25 +16,30 @@ TIP_THRESHOLD = 0.2  # > 20% del valor del viaje
 # --- Constantes ---
 EPS = 1e-7
 
-# --- Dataset (ruta por defecto para entrenamiento) ---
+# --- Dataset fuente para entrenamiento (enero 2020) ---
 DATA_URL_JAN = "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2020-01.parquet"
 
+# --- Datos procesados ---
+TRAIN_PROCESSED_PATH = (
+    "C:\\Users\\jeane_bkpplgv\\OneDrive\\Escritorio\\UDD\\5° Trimestre\\Desarrollo de Proyectos y Productos de Datos\\tarea_1\\data\\processed\\train\\train_data"
+)
 
-# --- Ruta del datos procesados para entramiento ---
-TRAIN_PATH = "C:\\Users\\jeane_bkpplgv\\OneDrive\\Escritorio\\UDD\\5° Trimestre\\Desarrollo de Proyectos y Productos de Datos\\tarea_1\\data\\processed\\train\\train_data"
+TEST_PROCESSED_PATH = (
+    "C:\\Users\\jeane_bkpplgv\\OneDrive\\Escritorio\\UDD\\5° Trimestre\\Desarrollo de Proyectos y Productos de Datos\\tarea_1\\data\\processed\\test\\test_data"
+)
 
+# --- Modelo entrenado ---
+MODEL_PATH = (
+    "C:\\Users\\jeane_bkpplgv\\OneDrive\\Escritorio\\UDD\\5° Trimestre\\Desarrollo de Proyectos y Productos de Datos\\tarea_1\\models\\model.joblib"
+)
 
-# --- Ruta del datos procesados para testeo ---
-TRAIN_PATH = "C:\\Users\\jeane_bkpplgv\\OneDrive\\Escritorio\\UDD\\5° Trimestre\\Desarrollo de Proyectos y Productos de Datos\\tarea_1\\data\\processed\\test\\test_data"
+# --- Dataset mensual externo para evaluación ---
+PARQUET_BASE_PATH = (
+    "C:\\Users\\jeane_bkpplgv\\OneDrive\\Escritorio\\UDD\\5° Trimestre\\Desarrollo de Proyectos y Productos de Datos\\Tarea_1\\data\\raw\\dataset_months"
+)
 
-# --- Ruta del modelo entrenado ---
-MODEL_PATH = "C:\\Users\\jeane_bkpplgv\\OneDrive\\Escritorio\\UDD\\5° Trimestre\\Desarrollo de Proyectos y Productos de Datos\\tarea_1\\models\\model.joblib"
-
-# --- Carpeta externa donde están los datasets mensuales ---
-PARQUET_BASE_PATH = "C:\\Users\\jeane_bkpplgv\\OneDrive\\Escritorio\\UDD\\5° Trimestre\\Desarrollo de Proyectos y Productos de Datos\\Tarea_1\\data\\raw\\dataset_months"
-
-# --- Meses para evaluación del modelo ---
-MESES_EVALUACION = ['2020-02', '2020-03', '2020-04']
-
-# --- URL base para descarga de Parquets mensuales ---
+# --- URL base de descarga para los meses de evaluación ---
 PARQUET_BASE_URL = "https://d37ci6vzurychx.cloudfront.net/trip-data"
+
+# --- Meses a evaluar ---
+MESES_EVALUACION = ['2020-02', '2020-03', '2020-04']
