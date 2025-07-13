@@ -21,9 +21,10 @@ for mes in MESES_EVALUACION:
     parquet_path = os.path.join(PARQUET_BASE_PATH, f"yellow_tripdata_{mes}.parquet")
 
     # Cargar y preparar los datos
-    df = load_dataset(parquet_path)
+    df = load_dataset(parquet_path).head(100_000)
     df = clean_data(df)
     df = build_features(df)
+
 
     # Evaluar modelo y guardar curva ROC
     plot_path = f"visualization/roc_curve_{mes}.png"
