@@ -2,7 +2,8 @@
 
 import sys
 import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 
 from src.data.dataset import load_dataset, clean_data
 from src.features.build_features import build_features
