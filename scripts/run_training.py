@@ -24,7 +24,7 @@ def main():
     # --- Guardar versión externa (100000 registros) ---
     df_to_save = df_final.head(100000)
     os.makedirs(os.path.dirname(TRAIN_PROCESSED_PATH), exist_ok=True)
-    df_to_save.to_parquet(f"{TRAIN_PROCESSED_PATH}.parquet", index=False)
+    df_final.to_parquet(f"{TRAIN_PROCESSED_PATH}data_train.parquet", index=False)
 
     # --- Guardar muestra interna para revisión rápida (10 registros) ---
     sample_path = "data/processed/train/train_sample.csv"

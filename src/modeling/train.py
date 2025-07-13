@@ -15,5 +15,5 @@ def train_model(df: pd.DataFrame) -> RandomForestClassifier:
     return model
 
 def save_model(model: RandomForestClassifier, path: str = MODEL_PATH):
-    os.makedirs(os.path.dirname(path), exist_ok=True)  # 🔧 Asegura que el directorio exista
+    os.makedirs(os.path.dirname(path), exist_ok=True)  # Asegura que el directorio exista
     joblib.dump(model, path)
