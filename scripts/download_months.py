@@ -17,33 +17,37 @@ from src.features.build_features import build_features
 def descargar_y_procesar_mes(mes: str):
     """
     Descarga, guarda crudo y procesa el Parquet mensual si no existe localmente.
-    También guarda muestras (head 10) de los datos sin procesar y procesados.
+    Guarda:
+    - Parquet crudo completo en TEST_RAW_PATH
+    - Muestra cruda (head 10) en data/raw/
+    - Parquet procesado completo en TEST_PROCESSED_PATH
+    - Muestra procesada (head 10) en data/processed/test/
     """
 
-    # ---------------------
-    # 1. Descargar datos crudos
-    # ---------------------
+    # Nombre del archivo
     nombre_archivo = f"yellow_tripdata_{mes}.parquet"
     url = f"{PARQUET_BASE_URL}/{nombre_archivo}"
-    ruta_local = os.path.join(TEST_RAW_PATH, nombre_archivo)
+    ruta_raw_completo = os.path.join(TEST_RAW_PATH, nombre_archivo)
 
-    if not os.path.exists(ruta_local):
+    # ---------------------
+    # 1. Descargar crudo si no existe
+    # ---------------------
+    if not os.path.exists(ruta_raw_completo):
         print(f"Descargando {mes} desde {url}...")
         os.makedirs(TEST_RAW_PATH, exist_ok=True)
-        urllib.request.urlretrieve(url, ruta_local)
-        print(f"✓ Archivo guardado en: {ruta_local}")
+        urllib.request.urlretrieve(url, ruta_raw_completo)
+        print(f"✓ Archivo guardado en: {ruta_raw_completo}")
     else:
         print(f"{mes} ya fue descargado previamente.")
 
     # ---------------------
     # 2. Cargar y guardar muestra cruda
     # ---------------------
-    df_raw = load_dataset(ruta_local)
-    df_raw_sample = df_raw.head(10)
-    df_raw_sample.to_parquet(
-        os.path.join(TEST_RAW_PATH, f"sample_raw_{mes}.parquet"),
-        index=False
-    )
+    df_raw = load_dataset(ruta_raw_completo)
+
+    sample_raw_path = os.path.join("data", "raw", f"sample_raw_{mes}.parquet")
+    os.makedirs(os.path.dirname(sample_raw_path), exist_ok=True)
+    df_raw.head(10).to_parquet(sample_raw_path, index=False)
 
     # ---------------------
     # 3. Procesar datos
@@ -62,12 +66,11 @@ def descargar_y_procesar_mes(mes: str):
     )
 
     # ---------------------
-    # 5. Guardar head(10) procesado también en la carpeta oficial
+    # 5. Guardar muestra procesada
     # ---------------------
-    df_final.head(10).to_parquet(
-        os.path.join(TEST_PROCESSED_PATH, f"sample_test_{mes}.parquet"),
-        index=False
-    )
+    sample_processed_path = os.path.join("data", "processed", "test", f"sample_test_{mes}.parquet")
+    os.makedirs(os.path.dirname(sample_processed_path), exist_ok=True)
+    df_final.head(10).to_parquet(sample_processed_path, index=False)
 
     print(f"✓ Procesamiento y guardado completado para {mes}.\n")
 
