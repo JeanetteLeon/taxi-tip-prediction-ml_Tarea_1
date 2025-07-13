@@ -1,6 +1,12 @@
 import os
 import pandas as pd
-from src.config import MESES_EVALUACION, PARQUET_BASE_PATH
+from src.config import MESES_EVALUACION, # scripts/evaluate_months.py
+
+import os
+import pandas as pd
+from src.config import MESES_EVALUACION, TEST_PROCESSED_PATH
+from src.data.dataset import load_dataset
+from src.modeling.predict import load_model, evaluate_model
 from src.data.dataset import load_dataset, clean_data
 from src.features.build_features import build_features
 from src.modeling.predict import load_model, evaluate_model
@@ -16,7 +22,7 @@ for mes in MESES_EVALUACION:
     print(f"Evaluando mes: {mes}")
 
     # Construir ruta al archivo parquet local
-    parquet_path = os.path.join(PARQUET_BASE_PATH, f"yellow_tripdata_{mes}.parquet")
+    parquet_path = os.path.join(TEST_PROCESSED_PATH, f"yellow_tripdata_{mes}.parquet")
 
     # Cargar y preparar los datos
     df = load_dataset(parquet_path)
