@@ -21,5 +21,6 @@ EPS = 1e-7
 DATA_URL_JAN = "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2020-01.parquet"
 
 # --- Modelo entrenado ---
-MODEL_PATH = "models/model.joblib"
+MODEL_PATH = "C:\\Users\\jeane_bkpplgv\\OneDrive\\Escritorio\\UDD\\5° Trimestre\\Desarrollo de Proyectos y Productos de Datos\\tarea_1\\model_outputs\\model.joblib"
+
 
