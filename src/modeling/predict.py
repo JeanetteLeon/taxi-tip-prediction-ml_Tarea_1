@@ -1,36 +1,51 @@
+import os
 import pandas as pd
-import joblib
-from sklearn.metrics import f1_score
+from src.config import MESES_EVALUACION, PARQUET_BASE_PATH
+from src.data.dataset import load_dataset, clean_data
+from src.features.build_features import build_features
+from src.modeling.predict import load_model, evaluate_model
 
-from src.config import FEATURES, TARGET_COL, MODEL_PATH
+# Cargar modelo una vez
+model = load_model()
 
-def load_model(path: str = MODEL_PATH):
-    """
-    Carga un modelo desde archivo.
+# Lista para guardar resultados
+resultados = []
 
-    Parámetros:
-    - path: ruta al archivo .joblib del modelo
+# Evaluar por cada mes
+for mes in MESES_EVALUACION:
+    print(f"Evaluando mes: {mes}")
 
-    Retorna:
-    - modelo cargado
-    """
-    return joblib.load(path)
+    # Construir ruta al archivo parquet local
+    parquet_path = os.path.join(PARQUET_BASE_PATH, f"yellow_tripdata_{mes}.parquet")
 
-def evaluate_model(model, df: pd.DataFrame) -> float:
-    """
-    Evalúa el modelo usando F1-score.
+    # Cargar y preparar los datos
+    df = load_dataset(parquet_path)
+    df = clean_data(df)
+    df = build_features(df)
 
-    Parámetros:
-    - model: modelo entrenado
-    - df: DataFrame con features + columna objetivo
+    # Definir rutas para guardar las imágenes
+    roc_path = f"src/visualization/roc_curve_{mes}.png"
+    cm_path = f"src/visualization/conf_matrix_{mes}.png"
 
-    Retorna:
-    - F1-score (float)
-    """
-    X = df[FEATURES]
-    y_true = df[TARGET_COL]
+    # Evaluar modelo
+    metrics, _ = evaluate_model(
+        df,
+        model,
+        save_plot=True,
+        plot_path=roc_path,
+        cm_path=cm_path
+    )
 
-    y_pred = model.predict(X)
-    score = f1_score(y_true, y_pred)
+    # Guardar resultados en lista
+    resultados.append({
+        "mes": mes,
+        "cantidad_ejemplos": len(df),
+        "f1_score": metrics["f1_score"],
+        "accuracy": metrics["accuracy"],
+        "roc_auc": metrics["roc_auc"]
+    })
 
-    return score
+# Crear y guardar tabla de resultados
+df_resultados = pd.DataFrame(resultados)
+df_resultados.to_csv("src/visualization/metrics_by_month.csv", index=False)
+print("\nResultados guardados en src/visualization/metrics_by_month.csv")
