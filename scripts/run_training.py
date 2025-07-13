@@ -21,10 +21,12 @@ def main():
     print("Generando variables...")
     df_final = build_features(df_clean)
 
-    # --- Guardar versión externa (100000 registros) ---
+    # --- Guardar versión externa ---
     df_to_save = df_final.head(100000)
     os.makedirs(os.path.dirname(TRAIN_PROCESSED_PATH), exist_ok=True)
-    df_final.to_parquet(f"{TRAIN_PROCESSED_PATH}data_train.parquet", index=False)
+    output_path = os.path.join(TRAIN_PROCESSED_PATH, "data_train.parquet")
+    df_final.to_parquet(output_path, index=False)
+
 
     # --- Guardar muestra interna para revisión rápida (10 registros) ---
     sample_path = "data/processed/train/train_sample.csv"
