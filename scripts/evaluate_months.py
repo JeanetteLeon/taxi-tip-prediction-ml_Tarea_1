@@ -12,6 +12,10 @@ model = load_model()
 # Lista para guardar métricas por mes
 resultados = []
 
+# Crear carpetas para guardar las imágenes
+os.makedirs("visualization/roc_curve", exist_ok=True)
+os.makedirs("visualization/conf_matrix", exist_ok=True)
+
 # Evaluar cada mes
 for mes in MESES_EVALUACION:
     print(f"Evaluando mes: {mes}")
@@ -19,13 +23,21 @@ for mes in MESES_EVALUACION:
     # Ruta del archivo procesado
     parquet_path = os.path.join(TEST_PROCESSED_PATH, f"test_processed_{mes}.parquet")
 
-    # Cargar datos procesados (ya limpios y con features)
+    # Cargar datos procesados
     df = load_dataset(parquet_path)
 
-    # Evaluar modelo y guardar curva ROC
-    os.makedirs("visualization", exist_ok=True)
-    plot_path = f"visualization/roc_curve_{mes}.png"
-    metrics = evaluate_model(df, model, save_plot=True, plot_path=plot_path)
+    # Rutas para guardar las imágenes
+    roc_path = f"visualization/roc_curve/roc_curve_{mes}.png"
+    cm_path = f"visualization/conf_matrix/conf_matrix_{mes}.png"
+
+    # Evaluar modelo y guardar imágenes
+    metrics, _ = evaluate_model(
+        df,
+        model,
+        save_plot=True,
+        plot_path=roc_path,
+        cm_path=cm_path
+    )
 
     # Guardar métricas
     resultados.append({
@@ -36,12 +48,13 @@ for mes in MESES_EVALUACION:
         "roc_auc": metrics["roc_auc"]
     })
 
-# Crear carpeta de salida si no existe
+# Crear carpeta de salida para el CSV si no existe
 os.makedirs("data/evaluation", exist_ok=True)
 
-# Crear y guardar tabla de resultados
+# Guardar tabla de métricas
 df_resultados = pd.DataFrame(resultados)
 csv_path = "data/evaluation/metrics_by_month.csv"
 df_resultados.to_csv(csv_path, index=False)
+
 print(f"\nResultados guardados en {csv_path}")
 

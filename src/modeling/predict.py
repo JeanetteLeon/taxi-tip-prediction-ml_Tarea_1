@@ -1,57 +1,68 @@
-import os
-import pandas as pd
-from src.config import MESES_EVALUACION, TEST_PROCESSED_PATH # scripts/evaluate_months.py
+# scripts/predict.py
 
-import os
-import pandas as pd
-from src.config import MESES_EVALUACION, TEST_PROCESSED_PATH
-from src.data.dataset import load_dataset
-from src.modeling.predict import load_model, evaluate_model
-from src.data.dataset import load_dataset, clean_data
-from src.features.build_features import build_features
-from src.modeling.predict import load_model, evaluate_model
+# src/modeling/predict.py
 
-# Cargar modelo una vez
-model = load_model()
+import joblib
+import matplotlib.pyplot as plt
+from sklearn.metrics import (
+    roc_auc_score, f1_score, accuracy_score,
+    roc_curve, confusion_matrix, ConfusionMatrixDisplay
+)
 
-# Lista para guardar resultados
-resultados = []
+from src.config import FEATURES, TARGET_COL
 
-# Evaluar por cada mes
-for mes in MESES_EVALUACION:
-    print(f"Evaluando mes: {mes}")
 
-    # Construir ruta al archivo parquet local
-    parquet_path = os.path.join(TEST_PROCESSED_PATH, f"yellow_tripdata_{mes}.parquet")
+def load_model(path: str = "models/model.joblib"):
+    """
+    Carga el modelo previamente entrenado desde disco.
+    """
+    return joblib.load(path)
 
-    # Cargar y preparar los datos
-    df = load_dataset(parquet_path)
-    df = clean_data(df)
-    df = build_features(df)
 
-    # Definir rutas para guardar las imágenes
-    roc_path = f"src/visualization/roc_curve_{mes}.png"
-    cm_path = f"src/visualization/conf_matrix_{mes}.png"
+def evaluate_model(df, model, save_plot=False, plot_path=None, cm_path=None):
+    """
+    Evalúa el modelo y opcionalmente guarda la curva ROC y la matriz de confusión.
 
-    # Evaluar modelo
-    metrics, _ = evaluate_model(
-        df,
-        model,
-        save_plot=True,
-        plot_path=roc_path,
-        cm_path=cm_path
-    )
+    Retorna:
+    - dict con métricas
+    - predicciones del modelo
+    """
+    X = df[FEATURES]
+    y_true = df[TARGET_COL]
+    y_proba = model.predict_proba(X)[:, 1]
+    y_pred = model.predict(X)
 
-    # Guardar resultados en lista
-    resultados.append({
-        "mes": mes,
-        "cantidad_ejemplos": len(df),
-        "f1_score": metrics["f1_score"],
-        "accuracy": metrics["accuracy"],
-        "roc_auc": metrics["roc_auc"]
-    })
+    # Calcular métricas
+    f1 = f1_score(y_true, y_pred)
+    acc = accuracy_score(y_true, y_pred)
+    roc_auc = roc_auc_score(y_true, y_proba)
 
-# Crear y guardar tabla de resultados
-df_resultados = pd.DataFrame(resultados)
-df_resultados.to_csv("src/visualization/metrics_by_month.csv", index=False)
-print("\nResultados guardados en src/visualization/metrics_by_month.csv")
+    # Guardar curva ROC
+    if save_plot and plot_path:
+        fpr, tpr, _ = roc_curve(y_true, y_proba)
+        plt.figure()
+        plt.plot(fpr, tpr, label=f"ROC Curve (AUC = {roc_auc:.2f})")
+        plt.plot([0, 1], [0, 1], 'k--')
+        plt.xlabel("False Positive Rate")
+        plt.ylabel("True Positive Rate")
+        plt.title("ROC Curve")
+        plt.legend(loc="lower right")
+        plt.tight_layout()
+        plt.savefig(plot_path)
+        plt.close()
+
+    # Guardar matriz de confusión
+    if save_plot and cm_path:
+        cm = confusion_matrix(y_true, y_pred)
+        disp = ConfusionMatrixDisplay(confusion_matrix=cm)
+        disp.plot(cmap=plt.cm.Blues)
+        plt.title("Confusion Matrix")
+        plt.tight_layout()
+        plt.savefig(cm_path)
+        plt.close()
+
+    return {
+        "f1_score": f1,
+        "accuracy": acc,
+        "roc_auc": roc_auc
+    }, y_pred
