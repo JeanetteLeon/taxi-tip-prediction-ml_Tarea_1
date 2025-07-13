@@ -28,6 +28,11 @@ TEST_PROCESSED_PATH = (
     "C:\\Users\\jeane_bkpplgv\\OneDrive\\Escritorio\\UDD\\5° Trimestre\\Desarrollo de Proyectos y Productos de Datos\\tarea_1\\data\\processed\\test\\test_data"
 )
 
+# --- Ruta donde se guardarán los datos crudos (sin procesar) de test ---
+TEST_RAW_PATH = (
+    "C:\\Users\\jeane_bkpplgv\\OneDrive\\Escritorio\\UDD\\5° Trimestre\\Desarrollo de Proyectos y Productos de Datos\\tarea_1\\data\\raw\\test\\"
+)
+
 # --- Modelo entrenado ---
 MODEL_PATH = (
     "C:\\Users\\jeane_bkpplgv\\OneDrive\\Escritorio\\UDD\\5° Trimestre\\Desarrollo de Proyectos y Productos de Datos\\tarea_1\\models\\model.joblib"
