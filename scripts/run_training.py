@@ -1,3 +1,5 @@
+# scripts/train_model.py
+
 import sys
 import os
 import pandas as pd
@@ -21,20 +23,25 @@ def main():
     print("Generando variables...")
     df_final = build_features(df_clean)
 
-    # --- Guardar versión externa ---
-    df_to_save = df_final.head(100000)
-    os.makedirs(os.path.dirname(TRAIN_PROCESSED_PATH), exist_ok=True)
-    output_path = os.path.join(TRAIN_PROCESSED_PATH, "data_train.parquet")
-    df_final.to_parquet(output_path, index=False)
+    # --- Crear carpeta si no existe ---
+    os.makedirs(TRAIN_PROCESSED_PATH, exist_ok=True)
 
+    # --- Guardar dataset completo ---
+    full_path = os.path.join(TRAIN_PROCESSED_PATH, "data_train.parquet")
+    df_final.to_parquet(full_path, index=False)
 
-    # --- Guardar muestra interna para revisión rápida (10 registros) ---
-    sample_path = "data/processed/train/train_sample.csv"
-    os.makedirs(os.path.dirname(sample_path), exist_ok=True)
-    df_final.head(10).to_csv(sample_path, index=False)
+    # --- Guardar muestra de 100.000 registros ---
+    sample_100k = df_final.head(100_000)
+    sample_100k_path = os.path.join(TRAIN_PROCESSED_PATH, "train_sample_100k.parquet")
+    sample_100k.to_parquet(sample_100k_path, index=False)
+
+    # --- Guardar muestra rápida de 10 registros en CSV ---
+    sample_10_path = "data/processed/train/train_sample.csv"
+    os.makedirs(os.path.dirname(sample_10_path), exist_ok=True)
+    df_final.head(10).to_csv(sample_10_path, index=False)
 
     print("Entrenando modelo...")
-    model = train_model(df_to_save)
+    model = train_model(sample_100k)
 
     print("Guardando modelo...")
     save_model(model, path=MODEL_PATH)
@@ -44,3 +51,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
