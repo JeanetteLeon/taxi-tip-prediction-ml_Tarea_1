@@ -30,17 +30,12 @@ TEST_PROCESSED_PATH = (
 
 # --- Ruta donde se guardarán los datos crudos (sin procesar) de test ---
 TEST_RAW_PATH = (
-    "C:\\Users\\jeane_bkpplgv\\OneDrive\\Escritorio\\UDD\\5° Trimestre\\Desarrollo de Proyectos y Productos de Datos\\tarea_1\\data\\raw\\test\\"
+    "C:\\Users\\jeane_bkpplgv\\OneDrive\\Escritorio\\UDD\\5° Trimestre\\Desarrollo de Proyectos y Productos de Datos\\tarea_1\\data\\raw"
 )
 
 # --- Modelo entrenado ---
 MODEL_PATH = (
     "C:\\Users\\jeane_bkpplgv\\OneDrive\\Escritorio\\UDD\\5° Trimestre\\Desarrollo de Proyectos y Productos de Datos\\tarea_1\\models\\model.joblib"
-)
-
-# --- Dataset mensual externo para evaluación ---
-PARQUET_BASE_PATH = (
-    "C:\\Users\\jeane_bkpplgv\\OneDrive\\Escritorio\\UDD\\5° Trimestre\\Desarrollo de Proyectos y Productos de Datos\\Tarea_1\\data\\raw\\dataset_months"
 )
 
 # --- URL base de descarga para los meses de evaluación ---
