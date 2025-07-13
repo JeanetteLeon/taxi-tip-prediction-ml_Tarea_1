@@ -22,6 +22,9 @@ def main():
 
     print("Generando variables...")
     df_final = build_features(df_clean)
+    
+    # Limitar a 100.000 registros
+    df_final = df_final.head(100000)
 
     print("Entrenando modelo...")
     model = train_model(df_final)
