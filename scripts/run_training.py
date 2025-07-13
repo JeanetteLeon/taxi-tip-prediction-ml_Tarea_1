@@ -27,7 +27,7 @@ def main():
     print(f"✓ Datos crudos guardados en: {raw_path}")
 
     # --- Guardar muestra cruda de 10 registros (proyecto) ---
-    sample_raw_path = os.path.join("data", "raw", "train_sample_raw.csv")
+    sample_raw_path = os.path.join("data", "raw",'train', "train_sample_raw.csv")
     os.makedirs(os.path.dirname(sample_raw_path), exist_ok=True)
     df_raw.head(10).to_csv(sample_raw_path, index=False)
 
