@@ -46,7 +46,7 @@ def descargar_y_procesar_mes(mes: str):
     # ---------------------
     df_raw = load_dataset(ruta_raw_completo)
 
-    sample_raw_10_path = os.path.join("data", "raw", f"sample_raw_{mes}.csv")
+    sample_raw_10_path = os.path.join("data", "raw", "test",  f"sample_raw_{mes}.csv")
     os.makedirs(os.path.dirname(sample_raw_10_path), exist_ok=True)
     df_raw.head(10).to_csv(sample_raw_10_path, index=False)
 
