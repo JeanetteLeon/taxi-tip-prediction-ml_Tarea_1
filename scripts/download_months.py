@@ -21,6 +21,7 @@ def descargar_y_procesar_mes(mes: str):
     - Parquet crudo completo en TEST_RAW_PATH
     - Muestra cruda (head 10) en data/raw/
     - Parquet procesado completo en TEST_PROCESSED_PATH
+    - Muestra procesada (100k) en TEST_PROCESSED_PATH
     - Muestra procesada (head 10) en data/processed/test/
     """
 
@@ -41,13 +42,13 @@ def descargar_y_procesar_mes(mes: str):
         print(f"{mes} ya fue descargado previamente.")
 
     # ---------------------
-    # 2. Cargar y guardar muestra cruda
+    # 2. Cargar y guardar muestra cruda (10 registros)
     # ---------------------
     df_raw = load_dataset(ruta_raw_completo)
 
-    sample_raw_path = os.path.join("data", "raw", f"sample_raw_{mes}.parquet")
-    os.makedirs(os.path.dirname(sample_raw_path), exist_ok=True)
-    df_raw.head(10).to_parquet(sample_raw_path, index=False)
+    sample_raw_10_path = os.path.join("data", "raw", f"sample_raw_{mes}.csv")
+    os.makedirs(os.path.dirname(sample_raw_10_path), exist_ok=True)
+    df_raw.head(10).to_csv(sample_raw_10_path, index=False)
 
     # ---------------------
     # 3. Procesar datos
@@ -60,17 +61,21 @@ def descargar_y_procesar_mes(mes: str):
     # 4. Guardar procesado completo
     # ---------------------
     os.makedirs(TEST_PROCESSED_PATH, exist_ok=True)
-    df_final.to_parquet(
-        os.path.join(TEST_PROCESSED_PATH, f"test_processed_{mes}.parquet"),
-        index=False
-    )
+    processed_path = os.path.join(TEST_PROCESSED_PATH, f"test_processed_{mes}.parquet")
+    df_final.to_parquet(processed_path, index=False)
 
     # ---------------------
-    # 5. Guardar muestra procesada
+    # 5. Guardar muestra procesada de 100k
     # ---------------------
-    sample_processed_path = os.path.join("data", "processed", "test", f"sample_test_{mes}.parquet")
-    os.makedirs(os.path.dirname(sample_processed_path), exist_ok=True)
-    df_final.head(10).to_parquet(sample_processed_path, index=False)
+    processed_100k_path = os.path.join(TEST_PROCESSED_PATH, f"sample_processed_100k_{mes}.parquet")
+    df_final.head(100_000).to_parquet(processed_100k_path, index=False)
+
+    # ---------------------
+    # 6. Guardar muestra procesada de 10 registros
+    # ---------------------
+    sample_processed_10_path = os.path.join("data", "processed", "test", f"sample_test_{mes}.csv")
+    os.makedirs(os.path.dirname(sample_processed_10_path), exist_ok=True)
+    df_final.head(10).to_csv(sample_processed_10_path, index=False)
 
     print(f"✓ Procesamiento y guardado completado para {mes}.\n")
 
