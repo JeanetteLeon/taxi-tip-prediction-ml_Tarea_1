@@ -36,7 +36,12 @@ for mes in MESES_EVALUACION:
         "roc_auc": metrics["roc_auc"]
     })
 
-# Crear DataFrame y guardar como CSV
+# Crear carpeta de salida si no existe
+os.makedirs("data/evaluation", exist_ok=True)
+
+# Crear y guardar tabla de resultados
 df_resultados = pd.DataFrame(resultados)
-df_resultados.to_csv("visualization/metrics_by_month.csv", index=False)
-print("\n✓ Resultados guardados en visualization/metrics_by_month.csv")
+csv_path = "data/evaluation/metrics_by_month.csv"
+df_resultados.to_csv(csv_path, index=False)
+print(f"\nResultados guardados en {csv_path}")
+
