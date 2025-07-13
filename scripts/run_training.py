@@ -10,12 +10,21 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".
 from src.data.dataset import load_dataset, clean_data
 from src.features.build_features import build_features
 from src.modeling.train import train_model, save_model
-from src.config import DATA_URL_JAN, TRAIN_PROCESSED_PATH, MODEL_PATH
+from src.config import DATA_URL_JAN, TRAIN_PROCESSED_PATH, TRAIN_RAW_PATH, MODEL_PATH
 
 
 def main():
     print("Cargando datos...")
+
+    # Cargar datos desde URL
     df_raw = load_dataset(DATA_URL_JAN)
+
+    # Guardar archivo crudo
+    os.makedirs(TRAIN_RAW_PATH, exist_ok=True)
+    raw_filename = "yellow_tripdata_2020-01.parquet"
+    raw_path = os.path.join(TRAIN_RAW_PATH, raw_filename)
+    df_raw.to_parquet(raw_path, index=False)
+    print(f"✓ Datos crudos guardados en: {raw_path}")
 
     print("Limpiando datos...")
     df_clean = clean_data(df_raw)
@@ -46,9 +55,8 @@ def main():
     print("Guardando modelo...")
     save_model(model, path=MODEL_PATH)
 
-    print("Proceso completado.")
+    print("✓ Proceso completado.")
 
 
 if __name__ == "__main__":
     main()
-

@@ -24,16 +24,21 @@ TRAIN_PROCESSED_PATH = (
     "C:\\Users\\jeane_bkpplgv\\OneDrive\\Escritorio\\UDD\\5° Trimestre\\Desarrollo de Proyectos y Productos de Datos\\tarea_1\\data\\processed\\train"
 )
 
+# --- Datos crudos de entramiento ---
+
+TRAIN_RAW_PATH = (
+    "C:\\Users\\jeane_bkpplgv\\OneDrive\\Escritorio\\UDD\\5° Trimestre\\Desarrollo de Proyectos y Productos de Datos\\tarea_1\\data\\raw\\train"
+)
+
 # --- Ruta donde se guardarán los datos crudos (sin procesar) de test ---
 TEST_RAW_PATH = (
-    "C:\\Users\\jeane_bkpplgv\\OneDrive\\Escritorio\\UDD\\5° Trimestre\\Desarrollo de Proyectos y Productos de Datos\\tarea_1\\data\\raw"
+    "C:\\Users\\jeane_bkpplgv\\OneDrive\\Escritorio\\UDD\\5° Trimestre\\Desarrollo de Proyectos y Productos de Datos\\tarea_1\\data\\raw\\test"
 )
 
 # --- Ruta donde se guardarán los datos procesados de test ---
 TEST_PROCESSED_PATH = (
     "C:\\Users\\jeane_bkpplgv\\OneDrive\\Escritorio\\UDD\\5° Trimestre\\Desarrollo de Proyectos y Productos de Datos\\tarea_1\\data\\processed\\test"
 )
-
 
 # --- Modelo entrenado ---
 MODEL_PATH = (
