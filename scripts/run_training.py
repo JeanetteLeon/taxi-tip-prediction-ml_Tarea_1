@@ -7,10 +7,10 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
 
-from scr.data.dataset import load_dataset, clean_data
-from scr.features.build_features import build_features
-from scr.modeling.train import train_model, save_model
-from scr.config import DATA_URL_JAN
+from src.data.dataset import load_dataset, clean_data
+from src.features.build_features import build_features
+from src.modeling.train import train_model, save_model
+from src.config import DATA_URL_JAN
 
 
 def main():
