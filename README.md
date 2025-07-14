@@ -10,6 +10,7 @@ Este proyecto tiene como objetivo principal modularizar y evaluar un modelo de c
 ## Estructura del Proyecto
 
 Taxi-tip-prediction-ml_Tarea_1/
+
 │
 ├── data/
 │   ├── raw/          # Datos originales en muestras (datos completos están en local)
