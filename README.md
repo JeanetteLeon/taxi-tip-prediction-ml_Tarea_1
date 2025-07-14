@@ -11,27 +11,7 @@ Este proyecto tiene como objetivo principal modularizar y evaluar un modelo de c
 
 Taxi-tip-prediction-ml_Tarea_1/
 
-│
-├── data/
-│   ├── raw/          # Datos originales en muestras (datos completos están en local)
-│   │   ├── train/
-│   │   └── test/
-│   └── processed/    # Datos preparados para modelamiento en muestras (datos completos están en local)
-│       ├── train/
-│       └── test/
-│
-├── notebooks/        # Notebook original y Notebook con análisis y evaluación del modelo
-│
-├── scripts/          # Scripts automatizados para ejecutar cada etapa del proceso del modelo
-│
-├── src/              # Código fuente del proyecto
-│   ├── config/       # Rutas y constantes
-│   ├── data/         # Funciones de carga y procesamiento
-│   ├── modeling/     # Entrenamiento, predicción y evaluación
-│   └── visualization/# Gráficos y análisis visual
-│
-├── requirements.txt  # Dependencias del proyecto
-└── README.md         # Documentación general
+![alt text](image.png)
 
 
 
