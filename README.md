@@ -12,23 +12,26 @@ Este proyecto tiene como objetivo principal modularizar y evaluar un modelo de c
 Taxi-tip-prediction-ml_Tarea_1/
 │
 ├── data/
-│ ├── raw/ # Datos originales en muestras (datos completos están en local)
-│ │ ├── train/
-│ │ └── test/
-│ └── processed/ # Datos preparados para modelamiento en muestras (datos completos están en local)
-│ ├── train/
-│ └── test/
+│   ├── raw/          # Datos originales en muestras (datos completos están en local)
+│   │   ├── train/
+│   │   └── test/
+│   └── processed/    # Datos preparados para modelamiento en muestras (datos completos están en local)
+│       ├── train/
+│       └── test/
 │
-├── notebooks/ # Exploración y evaluación en Jupyter
+├── notebooks/        # Notebook original y Notebook con análisis y evaluación del modelo
 │
-├── src/ # Código fuente del proyecto
-│ ├── config/ # Rutas y constantes
-│ ├── data/ # Funciones de carga y procesamiento
-│ ├── modeling/ # Entrenamiento, predicción y evaluación
-│ └── visualization/ # Gráficos y análisis visual
+├── scripts/          # Scripts automatizados para ejecutar cada etapa del proceso del modelo
 │
-├── requirements.txt # Dependencias del proyecto
-└── README.md # Documentación general
+├── src/              # Código fuente del proyecto
+│   ├── config/       # Rutas y constantes
+│   ├── data/         # Funciones de carga y procesamiento
+│   ├── modeling/     # Entrenamiento, predicción y evaluación
+│   └── visualization/# Gráficos y análisis visual
+│
+├── requirements.txt  # Dependencias del proyecto
+└── README.md         # Documentación general
+
 
 
 ---
@@ -61,6 +64,8 @@ Puedes ejecutar los scripts de preprocesamiento, entrenamiento y evaluación des
 
 * Nota: Es importante establecer PYTHONPATH=. para que Python reconozca correctamente los módulos del proyecto al usar rutas relativas.
 
+* Importante: Debido al volumen masivo de registros (millones de viajes), los datos de entrenamiento, testeo y el modelo entrenado fueron guardados localmente en el equipo y no se encuentran disponibles en este repositorio. Solo se trabaja con muestras representativas en la carpeta data/ y models/ para facilitar la reproducción del proyecto.
+
 
 4. Visualización:
 Los gráficos generados se guardan en src/visualization/.
@@ -81,4 +86,11 @@ Los gráficos generados se guardan en src/visualization/.
         (Para más detalles ver requirements.txt)
 
 
-* Importante: Debido al volumen masivo de registros (millones de viajes), los datos de entrenamiento, testeo y el modelo entrenado fueron guardados localmente en el equipo y no se encuentran disponibles en este repositorio. Solo se trabaja con muestras representativas en la carpeta data/ y models/ para facilitar la reproducción del proyecto.
+
+5. Análisis crítico y respuestas
+
+Las respuestas y el análisis detallado del punto 4 de la tarea se encuentran en el siguiente notebook:
+
+`notebooks/Analisis_critico_y_resultados.ipynb`
+
+----
